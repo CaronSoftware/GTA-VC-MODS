@@ -1,533 +1,64 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,device-scale=1.0" />
-  <title data-fa="مادهای GTA Vice City | راهنما و ابزارها" data-en="GTA Vice City Mods | Guide & Tools">مادهای GTA Vice City | راهنما و ابزارها</title>
-  <style>
-    :root {
-      --bg: #07111f;
-      --bg2: #0b1a2e;
-      --card: rgba(11, 26, 46, 0.78);
-      --text: #eaf2ff;
-      --muted: #9fb2cc;
-      --accent: #46d3ff;
-      --accent2: #7c5cff;
-      --good: #4ee59c;
-      --border: rgba(255,255,255,0.12);
-      --shadow: 0 12px 30px rgba(0,0,0,0.35);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Tahoma, Arial, sans-serif; /* Tahoma is often good for Persian */
-      background:
-        radial-gradient(circle at top left, rgba(70, 211, 255, 0.15), transparent 30%),
-        radial-gradient(circle at top right, rgba(124, 92, 255, 0.16), transparent 28%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      color: var(--text);
-      line-height: 1.7;
-      direction: rtl; /* Default to Right-to-Left for Persian */
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .container {
-      width: min(1100px, 92%);
-      margin: 0 auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(14px);
-      background: rgba(6, 14, 26, 0.72);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand h1 {
-      font-size: 1.1rem;
-      margin: 0;
-      letter-spacing: 0.5px;
-    }
-
-    .brand span {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .navlinks {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center; /* Vertically align items in nav */
-    }
-
-    .navlinks a {
-      color: var(--muted);
-      font-weight: 600;
-      transition: 0.2s ease;
-    }
-
-    .navlinks a:hover {
-      color: var(--text);
-    }
-
-    #langBtn {
-      background: none;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      cursor: pointer;
-      padding: 5px 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      transition: 0.2s ease;
-    }
-    #langBtn:hover {
-      filter: brightness(1.1);
-    }
-
-    .hero {
-      padding: 72px 0 36px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 0.9fr; /* Adjusted for RTL */
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .hero-box,
-    .side-box,
-    .card {
-      border: 1px solid var(--border);
-      background: var(--card);
-      box-shadow: var(--shadow);
-      border-radius: 20px;
-    }
-
-    .hero-box {
-      padding: 34px;
-    }
-
-    .hero h2 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem); /* Smaller for RTL */
-      line-height: 1.2;
-      margin: 0 0 16px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 65ch;
-      margin: 0 0 22px;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-weight: 700;
-      transition: 0.2s ease;
-      border: 1px solid transparent;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #04101f;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border-color: var(--border);
-      color: var(--text);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.05);
-    }
-
-    .side-box {
-      padding: 26px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 14px;
-    }
-
-    .badge {
-      display: inline-flex;
-      width: fit-content;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(78, 229, 156, 0.12);
-      color: var(--good);
-      border: 1px solid rgba(78, 229, 156, 0.25);
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .section {
-      padding: 18px 0 34px;
-    }
-
-    .section h3 {
-      font-size: clamp(1.5rem, 3vw, 2.2rem); /* Smaller for RTL */
-      margin: 0 0 14px;
-    }
-
-    .section p.lead {
-      margin: 0 0 18px;
-      color: var(--muted);
-      max-width: 72ch;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      padding: 22px;
-    }
-
-    .card h4 {
-      margin: 0 0 10px;
-      font-size: 1.15rem;
-    }
-
-    .card ul {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-    }
-
-    .steps {
-      counter-reset: step;
-    }
-
-    .step {
-      position: relative;
-      padding-left: 52px; /* Space for the counter */
-      margin-bottom: 16px;
-      color: var(--muted);
-    }
-
-    .step::before {
-      counter-increment: step;
-      content: counter(step);
-      position: absolute;
-      left: auto; /* Reset left for RTL */
-      right: 0; /* Position counter on the right */
-      top: 2px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #04101f;
-      font-weight: 800;
-    }
-
-    .callout {
-      border: 1px solid rgba(70, 211, 255, 0.22);
-      background: rgba(70, 211, 255, 0.08);
-      padding: 18px;
-      border-radius: 16px;
-      color: var(--text);
-    }
-
-    .subscribe {
-      text-align: center;
-      padding: 30px 22px;
-    }
-
-    .subscribe .handle {
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--accent);
-      margin-top: 8px;
-    }
-
-    footer {
-      padding: 26px 0 40px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      text-align: center;
-    }
-
-    @media (max-width: 900px) {
-      .hero-grid,
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .hero-box {
-        padding: 24px;
-      }
-      
-      .step {
-        padding-left: 0; /* Reset padding */
-        padding-right: 52px; /* Add padding on the right for RTL */
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTA VC MODS</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; text-align: center; background: #222; color: #fff; padding: 50px; }
+        .btn { padding: 15px 30px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; font-size: 18px; background: #e74c3c; color: white; }
+        .lang-btn { background: #3498db; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: #333; margin: 10% auto; padding: 20px; width: 80%; max-width: 500px; border-radius: 10px; }
+        .download-link { display: block; margin: 10px 0; color: #3498db; text-decoration: none; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <h1 data-fa="مادهای GTA Vice City" data-en="GTA Vice City Mods">GTA Vice City Mods</h1>
-        <span data-fa="نصب، ویرایش و مدیریت مادهای VC شما" data-en="Install, edit, and manage your VC mods">Install, edit, and manage your VC mods</span>
-      </div>
-      <nav class="navlinks">
-        <a href="#install" data-fa="نصب" data-en="Install">Install</a>
-        <a href="#edit" data-fa="ویرایش" data-en="Edit">Edit</a>
-        <a href="#tools" data-fa="ابزارها" data-en="Tools">Tools</a>
-        <a href="#subscribe" data-fa="اشتراک" data-en="Subscribe">Subscribe</a>
-        <button id="langBtn" data-fa="فارسی" data-en="English">English</button>
-      </nav>
+
+    <button class="btn lang-btn" onclick="toggleLang()" id="langBtn">English</button>
+    <h1 id="title">پروژه مادهای GTA Vice City</h1>
+
+    <button class="btn" onclick="openModal('tools')">ابزارها</button>
+    <button class="btn" onclick="openModal('dev')">ویدیوهای آموزشی</button>
+    <button class="btn" onclick="openModal('dev')">مادهای ماشین</button>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modalTitle">ابزارها</h2>
+            <div id="modalBody">
+                <a class="download-link" href="CollEditor_GTA-VC-MODS.rar">CollEditor</a>
+                <a class="download-link" href="IMG Tool_GTA-VC-MODS.rar">IMG Tool</a>
+                <a class="download-link" href="Magic.TXD_GTA-VC-MODS.rar">Magic.TXD</a>
+                <a class="download-link" href="TXD Workshop 4.0_GTA-VC-MODS.rar">TXD Workshop 4.0</a>
+                <a class="download-link" href="Vice City Mod Manager_GTA-VC-MODS.rar">Vice City Mod Manager</a>
+                <a class="download-link" href="ZModeler 2.2.6_GTA-VC-MODS.rar">ZModeler 2.2.6</a>
+            </div>
+            <button class="btn" onclick="closeModal()">بستن</button>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="hero-box">
-          <span class="badge" data-fa="راهنمای مادهای Vice City" data-en="Vice City Modding Guide">Vice City Modding Guide</span>
-          <h2 data-fa="هر آنچه برای نصب و ویرایش مادهای GTA Vice City نیاز دارید" data-en="Everything you need to install and edit GTA Vice City mods">Everything you need to install and edit GTA Vice City mods</h2>
-          <p data-fa="این سایت به شما کمک می‌کند تا مادهای GTA Vice City را شروع کنید: نصب وسایل نقلیه، جایگزینی بافت‌ها، ویرایش مدل‌ها و استفاده از ابزارهای مناسب بدون خراب کردن بازی." data-en="This site helps you get started with GTA Vice City modding: installing vehicles, replacing textures, editing models, and using the right tools without breaking your game.">
-            This site helps you get started with GTA Vice City modding: installing vehicles, replacing textures, editing models, and using the right tools without breaking your game.
-          </p>
-          <div class="buttons">
-            <a class="btn btn-primary" href="#install" data-fa="شروع نصب" data-en="Start Installing">Start Installing</a>
-            <a class="btn btn-secondary" href="#tools" data-fa="مشاهده ابزارها" data-en="See Tools">See Tools</a>
-          </div>
-        </div>
-        <div class="side-box">
-          <h3 data-fa="نکته سریع" data-en="Quick Tip" style="margin:0;">Quick Tip</h3>
-          <p data-fa="همیشه قبل از ویرایش هر چیزی، از فایل‌های بازی اصلی خود، gta3.img، پوشه data و فایل‌های وسیله نقلیه اصلی، پشتیبان تهیه کنید." data-en="Always keep a backup of your original game files, gta3.img, data folder, and original vehicle files before editing anything." style="margin:0; color: var(--muted);">
-            Always keep a backup of your original game files, gta3.img, data folder, and original vehicle files before editing anything.
-          </p>
-          <div class="callout">
-            <strong data-fa="توصیه شده:" data-en="Recommended:">Recommended:</strong>
-            <span data-fa="استفاده از Magic.TXD برای بافت‌ها و Blender + DragonFF برای ویرایش مدل." data-en="use Magic.TXD for textures and Blender + DragonFF for model editing.">
-              use <b>Magic.TXD</b> for textures and <b>Blender + DragonFF</b> for model editing.
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <script>
+        let isPersian = true;
+        const translations = {
+            fa: { title: "پروژه مادهای GTA Vice City", tools: "ابزارها", dev: "در حال توسعه", close: "بستن", lang: "English" },
+            en: { title: "GTA Vice City MODS Project", tools: "Tools", dev: "Under development", close: "Close", lang: "فارسی" }
+        };
 
-    <section class="section" id="install">
-      <h3 data-fa="نحوه نصب مادها" data-en="How to Install Mods">How to Install Mods</h3>
-      <p class="lead" data-fa="مراحل اساسی برای نصب مادهایی مانند اتومبیل، پوست، بافت یا نقشه‌های GTA Vice City." data-en="Basic steps for installing GTA Vice City mods like cars, skins, textures, or maps.">
-        Basic steps for installing GTA Vice City mods like cars, skins, textures, or maps.
-      </p>
-      <div class="grid-3">
-        <div class="card">
-          <h4 data-fa="۱. ابتدا پشتیبان‌گیری کنید" data-en="1. Backup First">1. Backup First</h4>
-          <ul>
-            <li data-fa="کپی کردن فایل‌های اصلی بازی شما" data-en="Copy your original game files">Copy your original game files</li>
-            <li data-fa="ذخیره gta3.img موجود" data-en="Save the stock gta3.img">Save the stock <code>gta3.img</code></li>
-            <li data-fa="نگه داشتن یک کپی از handling.cfg و default.ide" data-en="Keep a copy of handling.cfg and default.ide">Keep a copy of <code>handling.cfg</code> and <code>default.ide</code></li>
-            <li data-fa="ذخیره vehicles.col برای هر وسیله نقلیه" data-en="Save vehicles.col for each vehicle">Save <code>vehicles.col</code> for each vehicle</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 data-fa="۲. جایگزینی فایل‌ها" data-en="2. Replace Files">2. Replace Files</h4>
-          <ul>
-            <li data-fa="استفاده از گردش کار IMG Tool / Mod Loader / OpenIV-style" data-en="Use IMG Tool / Mod Loader / OpenIV-style workflow">Use IMG Tool / Mod Loader / OpenIV-style workflow</li>
-            <li data-fa="وارد کردن فایل‌های ماد در پوشه‌های صحیح" data-en="Import the mod files into the correct folders">Import the mod files into the correct folders</li>
-            <li data-fa="فقط زمانی بازنویسی کنید که بدانید فایل صحیح است" data-en="Overwrite only when you know the file is correct">Overwrite only when you know the file is correct</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4 data-fa="۳. تست در بازی" data-en="3. Test In-Game">3. Test In-Game</h4>
-          <ul>
-            <li data-fa="راه‌اندازی بازی پس از هر تغییر" data-en="Launch the game after every change">Launch the game after every change</li>
-            <li data-fa="بررسی قطعات نامرئی یا خرابی" data-en="Check for invisible parts or crashes">Check for invisible parts or crashes</li>
-            <li data-fa="هر بار یک مورد را رفع کنید" data-en="Fix one thing at a time">Fix one thing at a time</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="edit">
-      <h3 data-fa="نحوه ویرایش مادها" data-en="How to Edit Mods">How to Edit Mods</h3>
-      <p class="lead" data-fa="مدل‌ها، بافت‌ها و فایل‌های پیکربندی را به صورت ایمن ویرایش کنید تا مادهای شما به درستی در Vice City کار کنند." data-en="Edit models, textures, and configuration files safely so your mods work properly in Vice City.">
-        Edit models, textures, and configuration files safely so your mods work properly in Vice City.
-      </p>
-      <div class="card steps">
-        <div class="step" data-fa="مدل را در ZModeler یا Blender با استفاده از DragonFF باز کنید." data-en="Open the model in ZModeler or Blender using DragonFF.">
-          Open the model in <b>ZModeler</b> or <b>Blender</b> using <b>DragonFF</b>.
-        </div>
-        <div class="step" data-fa="ساختار سلسله مراتبی، Dummies، موقعیت چرخ‌ها و نام اشیاء را بررسی کنید." data-en="Check the hierarchy, dummies, wheel positions, and object names.">
-          Check the hierarchy, dummies, wheel positions, and object names.
-        </div>
-        <div class="step" data-fa="فایل بافت را در Magic.TXD باز کرده و نام بافت‌ها و کانال‌های آلفا را تأیید کنید." data-en="Open the texture file in Magic.TXD and verify texture names and alpha channels.">
-          Open the texture file in <b>Magic.TXD</b> and verify texture names and alpha channels.
-        </div>
-        <div class="step" data-fa="فایل vehicles.col را برای ویرایش ویژگی‌های برخورد و تعلیق پشتیبان‌گیری و ویرایش کنید." data-en="Backup and edit the vehicles.col file for collision and suspension properties.">
-          Backup and edit the <code>vehicles.col</code> file for collision and suspension properties.
-        </div>
-        <div class="step" data-fa="اگر وسیله نقلیه جدیدی اضافه می‌کنید، handling.cfg و default.ide را ویرایش کنید." data-en="Edit handling.cfg and default.ide if you are adding a new vehicle.">
-          Edit <code>handling.cfg</code> and <code>default.ide</code> if you are adding a new vehicle.
-        </div>
-        <div class="step" data-fa="با دقت صادر کنید و قبل از انتشار نهایی، ماد را در بازی تست کنید." data-en="Export carefully and test the mod in-game before final release.">
-          Export carefully and test the mod in-game before final release.
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="tools">
-      <h3 data-fa="ابزارهایی که نیاز خواهید داشت" data-en="Tools You’ll Need">Tools You’ll Need</h3>
-      <p class="lead" data-fa="اینها ابزارهای اصلی برای مادینگ GTA Vice City هستند." data-en="These are the main tools for GTA Vice City modding.">
-        These are the main tools for GTA Vice City modding.
-      </p>
-      <div class="grid-3">
-        <div class="card">
-          <h4 data-fa="ZModeler" data-en="ZModeler">ZModeler</h4>
-          <p data-fa="برای ویرایش و ساخت مدل‌های .dff." data-en="For editing and creating .dff models." style="color: var(--muted); margin:0;">
-            For editing and creating <b>.dff</b> models.
-          </p>
-        </div>
-        <div class="card">
-          <h4 data-fa="Magic.TXD" data-en="Magic.TXD">Magic.TXD</h4>
-          <p data-fa="برای باز کردن، ویرایش و وارد کردن ایمن فایل‌های بافت GTA." data-en="For opening, editing, and importing GTA texture files safely." style="color: var(--muted); margin:0;">
-            For opening, editing, and importing GTA texture files safely.
-          </p>
-        </div>
-        <div class="card">
-          <h4 data-fa="Blender + DragonFF" data-en="Blender + DragonFF">Blender + DragonFF</h4>
-          <p data-fa="برای مشاهده، ویرایش و صادر کردن مدل‌های GTA." data-en="For viewing, editing, and exporting GTA models." style="color: var(--muted); margin:0;">
-            For viewing, editing, and exporting GTA models.
-          </p>
-        </div>
-        <div class="card">
-          <h4 data-fa="IMG Tool / File Manager" data-en="IMG Tool / File Manager">IMG Tool / File Manager</h4>
-          <p data-fa="برای جایگزینی فایل‌ها در آرشیو بازی." data-en="For replacing files inside the game's archive." style="color: var(--muted); margin:0;">
-            For replacing files inside the game's archive.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="subscribe">
-      <div class="card subscribe">
-        <h3 data-fa="برای مادهای بیشتر مشترک شوید" data-en="Subscribe for more mods">Subscribe for more mods</h3>
-        <p data-fa="به کانال روبیکا من برای مادهای GTA Vice City، آموزش‌ها و به‌روزرسانی‌ها بپیوندید." data-en="Join my Rubika channel for GTA Vice City mods, tutorials, and updates." style="color: var(--muted); margin: 0;">
-          Join my Rubika channel for GTA Vice City mods, tutorials, and updates.
-        </p>
-        <div class="handle">
-          <a href="https://rubika.ir/GTA_VC_MODS" data-fa="@GTA_VC_MODS" data-en="@GTA_VC_MODS">@GTA_VC_MODS</a>
-        </div>
-        <p data-fa="ایجاد شده توسط: HerculeEdit" data-en="Created by: HerculeEdit" style="font-size: 0.9rem; margin-top: 10px;">
-          Created by: <a href="https://rubika.ir/HerculeEdit" style="color: var(--accent); text-decoration: underline;">HerculeEdit</a>
-        </p>
-        <p data-fa="ابزارها و آموزش‌ها در rubika.ir/GTA_VC_MODS" data-en="Tools and tutorials at rubika.ir/GTA_VC_MODS">
-       Tools and tutorials at rubika.ir/GTA_VC_MODS
-      </p>
-      </div>
-
-    </section>
-  </main>
-
-  <footer>
-    <span data-fa="ساخته شده برای طرفداران مادهای GTA Vice City • caronsoftware.github.io/GTA-VC-MODS" data-en="Made for GTA Vice City modding fans • caronsoftware.github.io/GTA-VC-MODS">
-      Made for GTA Vice City modding fans • caronsoftware.github.io/GTA-VC-MODS
-    </span>
-  </footer>
-
-  <script>
-    const langBtn = document.getElementById('langBtn');
-    let isEnglish = true; // Start with English shown on button
-
-    // Function to set initial language based on lang attribute of HTML
-    function setInitialLanguage() {
-      const htmlLang = document.documentElement.getAttribute('lang');
-      if (htmlLang === 'fa') {
-        isEnglish = false;
-        langBtn.textContent = "English";
-        document.body.style.direction = "rtl";
-      } else {
-        isEnglish = true;
-        langBtn.textContent = "فارسی";
-        document.body.style.direction = "ltr";
-      }
-      updateTextContent();
-    }
-
-    function updateTextContent() {
-      document.querySelectorAll('[data-fa]').forEach(el => {
-        const faText = el.getAttribute('data-fa');
-        const enText = el.getAttribute('data-en');
-        if (isEnglish) {
-          el.textContent = enText !== null ? enText : faText; // Fallback to faText if enText is missing
-        } else {
-          el.textContent = faText !== null ? faText : enText; // Fallback to enText if faText is missing
+        function toggleLang() {
+            isPersian = !isPersian;
+            const t = isPersian ? translations.fa : translations.en;
+            document.documentElement.dir = isPersian ? "rtl" : "ltr";
+            document.getElementById('title').innerText = t.title;
+            document.getElementById('langBtn').innerText = t.lang;
+            document.getElementById('modalTitle').innerText = t.tools;
         }
-      });
-    }
 
-    langBtn.addEventListener('click', () => {
-      isEnglish = !isEnglish; // Toggle the state
-      langBtn.textContent = isEnglish ? "فارسی" : "English"; // Update button text
-      updateTextContent(); // Update all translatable texts
-      document.body.style.direction = isEnglish ? "ltr" : "rtl"; // Switch text direction
-    });
-
-    // Set the initial language when the page loads
-    setInitialLanguage();
-  </script>
+        function openModal(type) {
+            document.getElementById('modal').style.display = 'block';
+            if(type === 'dev') document.getElementById('modalBody').innerHTML = isPersian ? "در حال توسعه" : "Under development";
+        }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    </script>
 </body>
 </html>
