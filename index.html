@@ -5,60 +5,284 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTA VC MODS</title>
     <style>
-        body { font-family: Tahoma, sans-serif; text-align: center; background: #222; color: #fff; padding: 50px; }
-        .btn { padding: 15px 30px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; font-size: 18px; background: #e74c3c; color: white; }
-        .lang-btn { background: #3498db; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: #333; margin: 10% auto; padding: 20px; width: 80%; max-width: 500px; border-radius: 10px; }
-        .download-link { display: block; margin: 10px 0; color: #3498db; text-decoration: none; }
+        :root {
+            --primary-color: #3498db; /* Persian Blue */
+            --secondary-color: #e74c3c; /* Red for accent */
+            --background-color: #f4f7f6; /* Light background */
+            --text-color: #333;
+            --header-bg: #2c3e50; /* Dark header */
+            --hover-color: #2980b9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .top-bar {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--secondary-color);
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .lang-btn {
+            background: #5dade2; /* Lighter blue for lang switch */
+            font-weight: bold;
+        }
+        .lang-btn:hover {
+            background: #3498db;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 550px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: fadeInDown 0.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .download-link {
+            display: block;
+            margin: 12px 0;
+            padding: 10px;
+            background: #eaf2f8; /* Very light blue */
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .download-link:hover {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-btn:hover {
+            color: var(--secondary-color);
+        }
+        .error-message {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
     </style>
 </head>
-<body>
+<body lang="fa" dir="rtl">
 
-    <button class="btn lang-btn" onclick="toggleLang()" id="langBtn">English</button>
-    <h1 id="title">پروژه مادهای GTA Vice City</h1>
+    <div class="top-bar">
+        <h1>GTA VC MODS</h1>
+        <button class="btn lang-btn" onclick="toggleLang()" id="langBtn">English</button>
+    </div>
 
-    <button class="btn" onclick="openModal('tools')">ابزارها</button>
-    <button class="btn" onclick="openModal('dev')">ویدیوهای آموزشی</button>
-    <button class="btn" onclick="openModal('dev')">مادهای ماشین</button>
+    <div class="content">
+        <h2 id="main-title">پروژه مادهای GTA Vice City</h2>
+        <p id="subtitle">راهنمای جامع ماد کردن و دانلود ابزارهای مورد نیاز</p>
 
-    <!-- Modal -->
-    <div id="modal" class="modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 id="modalTitle">ابزارها</h2>
-            <div id="modalBody">
-                <a class="download-link" href="CollEditor_GTA-VC-MODS.rar">CollEditor</a>
-                <a class="download-link" href="IMG Tool_GTA-VC-MODS.rar">IMG Tool</a>
-                <a class="download-link" href="Magic.TXD_GTA-VC-MODS.rar">Magic.TXD</a>
-                <a class="download-link" href="TXD Workshop 4.0_GTA-VC-MODS.rar">TXD Workshop 4.0</a>
-                <a class="download-link" href="Vice City Mod Manager_GTA-VC-MODS.rar">Vice City Mod Manager</a>
-                <a class="download-link" href="ZModeler 2.2.6_GTA-VC-MODS.rar">ZModeler 2.2.6</a>
-            </div>
-            <button class="btn" onclick="closeModal()">بستن</button>
+        <button class="btn btn-primary" onclick="showSection('tools')">ابزارها</button>
+        <button class="btn btn-primary" onclick="showSection('dev')">ویدیوهای آموزشی</button>
+        <button class="btn btn-primary" onclick="showSection('dev')">مادهای ماشین</button>
+    </div>
+
+    <!-- Modals -->
+    <div id="toolsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('toolsModal')">&times;</span>
+            <h2 id="toolsModalTitle">ابزارها</h2>
+            <a class="download-link" href="CollEditor_GTA-VC-MODS.rar">CollEditor</a>
+            <a class="download-link" href="IMG Tool_GTA-VC-MODS.rar">IMG Tool</a>
+            <a class="download-link" href="Magic.TXD_GTA-VC-MODS.rar">Magic.TXD</a>
+            <a class="download-link" href="TXD Workshop 4.0_GTA-VC-MODS.rar">TXD Workshop 4.0</a>
+            <a class="download-link" href="Vice City Mod Manager_GTA-VC-MODS.rar">Vice City Mod Manager</a>
+            <a class="download-link" href="ZModeler 2.2.6_GTA-VC-MODS.rar">ZModeler 2.2.6</a>
+            <button class="btn btn-danger" onclick="closeModal('toolsModal')">بستن</button>
+        </div>
+    </div>
+
+    <div id="devModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('devModal')">&times;</span>
+            <h2 id="devModalTitle"></h2>
+            <p id="devModalText"></p>
+            <button class="btn btn-danger" onclick="closeModal('devModal')">بستن</button>
         </div>
     </div>
 
     <script>
         let isPersian = true;
         const translations = {
-            fa: { title: "پروژه مادهای GTA Vice City", tools: "ابزارها", dev: "در حال توسعه", close: "بستن", lang: "English" },
-            en: { title: "GTA Vice City MODS Project", tools: "Tools", dev: "Under development", close: "Close", lang: "فارسی" }
+            fa: {
+                mainTitle: "پروژه مادهای GTA Vice City",
+                subtitle: "راهنمای جامع ماد کردن و دانلود ابزارهای مورد نیاز",
+                tools: "ابزارها",
+                videos: "ویدیوهای آموزشی",
+                cars: "مادهای ماشین",
+                dev: "این بخش در حال توسعه است. لطفاً بعداً دوباره بررسی کنید.",
+                close: "بستن",
+                lang: "English"
+            },
+            en: {
+                mainTitle: "GTA Vice City MODS Project",
+                subtitle: "Your Comprehensive Guide to Modding and Tool Downloads",
+                tools: "Tools",
+                videos: "Tutorial Videos",
+                cars: "Car Mods",
+                dev: "This section is currently under development. Please check back later.",
+                close: "Close",
+                lang: "فارسی"
+            }
         };
+
+        function updateContent(lang) {
+            const t = translations[lang];
+            document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
+            document.getElementById('main-title').innerText = t.mainTitle;
+            document.getElementById('subtitle').innerText = t.subtitle;
+            document.querySelector('.content button:nth-of-type(1)').innerText = t.tools;
+            document.querySelector('.content button:nth-of-type(2)').innerText = t.videos;
+            document.querySelector('.content button:nth-of-type(3)').innerText = t.cars;
+            document.getElementById('langBtn').innerText = t.lang;
+
+            // Update modal titles and text if modals are open
+            if (document.getElementById('toolsModal').classList.contains('active')) {
+                document.getElementById('toolsModalTitle').innerText = t.tools;
+            }
+            if (document.getElementById('devModal').classList.contains('active')) {
+                document.getElementById('devModalTitle').innerText = isPersian ? "ویدیوهای آموزشی" : "Tutorial Videos"; // Or assign based on which button was clicked
+                document.getElementById('devModalText').innerText = t.dev;
+            }
+        }
 
         function toggleLang() {
             isPersian = !isPersian;
-            const t = isPersian ? translations.fa : translations.en;
-            document.documentElement.dir = isPersian ? "rtl" : "ltr";
-            document.getElementById('title').innerText = t.title;
-            document.getElementById('langBtn').innerText = t.lang;
-            document.getElementById('modalTitle').innerText = t.tools;
+            updateContent(isPersian ? "fa" : "en");
         }
 
-        function openModal(type) {
-            document.getElementById('modal').style.display = 'block';
-            if(type === 'dev') document.getElementById('modalBody').innerHTML = isPersian ? "در حال توسعه" : "Under development";
+        function showSection(type) {
+            if (type === 'tools') {
+                document.getElementById('toolsModal').style.display = 'flex'; // Use flex to center content
+                document.getElementById('toolsModal').classList.add('active');
+                document.getElementById('toolsModalTitle').innerText = isPersian ? "ابزارها" : "Tools";
+            } else { // dev section
+                document.getElementById('devModal').style.display = 'flex'; // Use flex to center content
+                document.getElementById('devModal').classList.add('active');
+                // Determine which button was clicked to set the correct title
+                const activeButtons = document.querySelectorAll('.content button');
+                let clickedButtonText = '';
+                activeButtons.forEach(button => {
+                    if (button.innerText === (isPersian ? "ویدیوهای آموزشی" : "Tutorial Videos")) {
+                        clickedButtonText = button.innerText;
+                    } else if (button.innerText === (isPersian ? "مادهای ماشین" : "Car Mods")) {
+                        clickedButtonText = button.innerText;
+                    }
+                });
+                 document.getElementById('devModalTitle').innerText = clickedButtonText;
+                 document.getElementById('devModalText').innerText = isPersian ? translations.fa.dev : translations.en.dev;
+            }
         }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            // Use a timeout to allow the fade-out transition to complete before hiding the element
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400); // Match the transition duration
+        }
+
+        // Initial content load
+        updateContent(isPersian ? "fa" : "en");
     </script>
 </body>
 </html>
