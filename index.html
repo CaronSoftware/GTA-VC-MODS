@@ -12,6 +12,7 @@
             --text-color: #333;
             --header-bg: #2c3e50; /* Dark header */
             --hover-color: #2980b9;
+            --button-hover-glow: rgba(52, 152, 219, 0.7);
         }
 
         body {
@@ -21,7 +22,54 @@
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
+            overflow: hidden; /* Hide overflow from background animation */
+            position: relative; /* Needed for absolute positioning of background */
         }
+
+        /* Background Sphere Animation */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .sphere {
+            position: absolute;
+            background: radial-gradient(circle, rgba(52, 152, 219, 0.3) 0%, rgba(52, 152, 219, 0) 70%);
+            border-radius: 50%;
+            animation: moveSphere 20s infinite alternate ease-in-out;
+            opacity: 0.8;
+            filter: blur(30px);
+        }
+        /* More spheres for depth */
+        .sphere:nth-child(1) { width: 300px; height: 300px; top: -150px; left: -150px; animation-duration: 25s; }
+        .sphere:nth-child(2) { width: 250px; height: 250px; top: 70%; left: 60%; animation-duration: 18s; animation-delay: -5s; }
+        .sphere:nth-child(3) { width: 400px; height: 400px; top: 30%; left: 10%; animation-duration: 22s; animation-delay: -10s; }
+
+        @keyframes moveSphere {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 100px) scale(1.2); }
+            100% { transform: translate(-100px, -50px) scale(0.8); }
+        }
+
+        /* Texture Overlay (optional, uncomment to use) */
+        /*
+        .background-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('path/to/your/texture.png'); // Replace with your texture path
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        */
 
         .top-bar {
             background-color: var(--header-bg);
@@ -31,16 +79,21 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative; /* Ensure it stays above background */
+            z-index: 10;
         }
 
         .top-bar h1 {
             margin: 0;
             font-size: 24px;
+            letter-spacing: 1px; /* Slight letter spacing for elegance */
         }
 
         .content {
-            padding: 40px 20px;
+            padding: 60px 20px; /* Increased padding to make space for background effect */
             text-align: center;
+            position: relative; /* Ensure content stays above background */
+            z-index: 10;
         }
 
         .btn {
@@ -51,32 +104,35 @@
             border-radius: 8px;
             font-size: 16px;
             font-weight: 500;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             color: white;
+            position: relative;
+            overflow: hidden; /* For the gradient animation */
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%; /* Start off-screen */
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(10deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.4s ease-out;
+        }
+
+        .btn:hover::before {
+            left: 100%; /* Move across the button */
         }
 
         .btn-primary {
             background-color: var(--primary-color);
+            box-shadow: 0 4px 15px 0 var(--button-hover-glow);
         }
         .btn-primary:hover {
             background-color: var(--hover-color);
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background-color: var(--secondary-color);
-        }
-        .btn-danger:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .lang-btn {
-            background: #5dade2; /* Lighter blue for lang switch */
-            font-weight: bold;
-        }
-        .lang-btn:hover {
-            background: #3498db;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px 0 rgba(52, 152, 219, 0.9);
         }
 
         /* Modal Styles */
@@ -92,27 +148,30 @@
             background-color: rgba(0, 0, 0, 0.7);
             opacity: 0;
             transition: opacity 0.4s ease-in-out;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px); /* Enhanced blur */
+            justify-content: center; /* Center modal horizontally */
+            align-items: center; /* Center modal vertically */
         }
 
         .modal.active {
             opacity: 1;
+            display: flex; /* Use flex to enable centering */
         }
 
         .modal-content {
             background-color: #fff;
-            margin: 10% auto;
             padding: 30px;
             border-radius: 12px;
             width: 85%;
             max-width: 550px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation: fadeInDown 0.5s ease-out;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            animation: fadeInDown 0.5s ease-out forwards; /* forwards keeps the state */
             position: relative;
+            text-align: right; /* Align modal content to the right for RTL */
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -122,29 +181,31 @@
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 10px;
             margin-bottom: 20px;
+            font-size: 22px;
         }
 
         .download-link {
             display: block;
             margin: 12px 0;
-            padding: 10px;
+            padding: 10px 15px;
             background: #eaf2f8; /* Very light blue */
             color: var(--primary-color);
             text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            font-weight: 500;
         }
         .download-link:hover {
             background: var(--primary-color);
             color: white;
-            text-decoration: none;
+            transform: translateX(5px); /* Slight move on hover */
         }
 
         .close-btn {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
+            top: 15px;
+            left: 15px; /* Positioned on the left for RTL */
+            font-size: 28px;
             font-weight: bold;
             color: #aaa;
             cursor: pointer;
@@ -159,20 +220,26 @@
         }
     </style>
 </head>
-<body lang="fa" dir="rtl">
+<body>
+
+    <div class="background-container">
+        <div class="sphere"></div>
+        <div class="sphere"></div>
+        <div class="sphere"></div>
+    </div>
 
     <div class="top-bar">
         <h1>GTA VC MODS</h1>
-        <button class="btn lang-btn" onclick="toggleLang()" id="langBtn">English</button>
+        <!-- Language switch button removed -->
     </div>
 
     <div class="content">
         <h2 id="main-title">پروژه مادهای GTA Vice City</h2>
         <p id="subtitle">راهنمای جامع ماد کردن و دانلود ابزارهای مورد نیاز</p>
 
-        <button class="btn btn-primary" onclick="showSection('tools')">ابزارها</button>
-        <button class="btn btn-primary" onclick="showSection('dev')">ویدیوهای آموزشی</button>
-        <button class="btn btn-primary" onclick="showSection('dev')">مادهای ماشین</button>
+        <button class="btn btn-primary" onclick="showModal('toolsModal')">ابزارها</button>
+        <button class="btn btn-primary" onclick="showModal('tutorialModal')">ویدیوهای آموزشی</button>
+        <button class="btn btn-primary" onclick="showModal('carModsModal')">مادهای ماشین</button>
     </div>
 
     <!-- Modals -->
@@ -190,86 +257,52 @@
         </div>
     </div>
 
-    <div id="devModal" class="modal">
+    <div id="tutorialModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('devModal')">&times;</span>
-            <h2 id="devModalTitle"></h2>
-            <p id="devModalText"></p>
-            <button class="btn btn-danger" onclick="closeModal('devModal')">بستن</button>
+            <span class="close-btn" onclick="closeModal('tutorialModal')">&times;</span>
+            <h2>ویدیوهای آموزشی</h2>
+            <p>ویدیو های آموزشی در کانال روبیکا: <a href="https://rubika.ir/GTA_VC_MODS" target="_blank" style="color: #3498db; text-decoration: underline;">rubika.ir/GTA_VC_MODS</a></p>
+            <button class="btn btn-danger" onclick="closeModal('tutorialModal')">بستن</button>
+        </div>
+    </div>
+
+    <div id="carModsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('carModsModal')">&times;</span>
+            <h2>مادهای ماشین</h2>
+            <p>این بخش در حال توسعه است. لطفاً بعداً دوباره بررسی کنید.</p>
+            <button class="btn btn-danger" onclick="closeModal('carModsModal')">بستن</button>
         </div>
     </div>
 
     <script>
-        let isPersian = true;
-        const translations = {
-            fa: {
-                mainTitle: "پروژه مادهای GTA Vice City",
-                subtitle: "راهنمای جامع ماد کردن و دانلود ابزارهای مورد نیاز",
-                tools: "ابزارها",
-                videos: "ویدیوهای آموزشی",
-                cars: "مادهای ماشین",
-                dev: "این بخش در حال توسعه است. لطفاً بعداً دوباره بررسی کنید.",
-                close: "بستن",
-                lang: "English"
-            },
-            en: {
-                mainTitle: "GTA Vice City MODS Project",
-                subtitle: "Your Comprehensive Guide to Modding and Tool Downloads",
-                tools: "Tools",
-                videos: "Tutorial Videos",
-                cars: "Car Mods",
-                dev: "This section is currently under development. Please check back later.",
-                close: "Close",
-                lang: "فارسی"
-            }
-        };
+        // Background Sphere Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const spheres = document.querySelectorAll('.sphere');
+            spheres.forEach((sphere, index) => {
+                const size = Math.random() * 200 + 100; // Random size between 100px and 300px
+                const positionX = Math.random() * 100; // Random position X (percentage)
+                const positionY = Math.random() * 100; // Random position Y (percentage)
+                const animationDuration = Math.random() * 10 + 15; // Random duration between 15s and 25s
+                const animationDelay = Math.random() * -10; // Random negative delay for staggered start
 
-        function updateContent(lang) {
-            const t = translations[lang];
-            document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
-            document.getElementById('main-title').innerText = t.mainTitle;
-            document.getElementById('subtitle').innerText = t.subtitle;
-            document.querySelector('.content button:nth-of-type(1)').innerText = t.tools;
-            document.querySelector('.content button:nth-of-type(2)').innerText = t.videos;
-            document.querySelector('.content button:nth-of-type(3)').innerText = t.cars;
-            document.getElementById('langBtn').innerText = t.lang;
+                sphere.style.width = `${size}px`;
+                sphere.style.height = `${size}px`;
+                sphere.style.top = `${positionY}%`;
+                sphere.style.left = `${positionX}%`;
+                sphere.style.animation = `moveSphere ${animationDuration}s infinite alternate ease-in-out`;
+                sphere.style.animationDelay = `${animationDelay}s`;
+            });
+        });
 
-            // Update modal titles and text if modals are open
-            if (document.getElementById('toolsModal').classList.contains('active')) {
-                document.getElementById('toolsModalTitle').innerText = t.tools;
-            }
-            if (document.getElementById('devModal').classList.contains('active')) {
-                document.getElementById('devModalTitle').innerText = isPersian ? "ویدیوهای آموزشی" : "Tutorial Videos"; // Or assign based on which button was clicked
-                document.getElementById('devModalText').innerText = t.dev;
-            }
-        }
-
-        function toggleLang() {
-            isPersian = !isPersian;
-            updateContent(isPersian ? "fa" : "en");
-        }
-
-        function showSection(type) {
-            if (type === 'tools') {
-                document.getElementById('toolsModal').style.display = 'flex'; // Use flex to center content
-                document.getElementById('toolsModal').classList.add('active');
-                document.getElementById('toolsModalTitle').innerText = isPersian ? "ابزارها" : "Tools";
-            } else { // dev section
-                document.getElementById('devModal').style.display = 'flex'; // Use flex to center content
-                document.getElementById('devModal').classList.add('active');
-                // Determine which button was clicked to set the correct title
-                const activeButtons = document.querySelectorAll('.content button');
-                let clickedButtonText = '';
-                activeButtons.forEach(button => {
-                    if (button.innerText === (isPersian ? "ویدیوهای آموزشی" : "Tutorial Videos")) {
-                        clickedButtonText = button.innerText;
-                    } else if (button.innerText === (isPersian ? "مادهای ماشین" : "Car Mods")) {
-                        clickedButtonText = button.innerText;
-                    }
-                });
-                 document.getElementById('devModalTitle').innerText = clickedButtonText;
-                 document.getElementById('devModalText').innerText = isPersian ? translations.fa.dev : translations.en.dev;
-            }
+        // Modal Logic
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex'; // Use flex to center content
+            // Trigger the fade-in animation after a short delay
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10); // Small delay to ensure the display:flex is applied before transition
         }
 
         function closeModal(modalId) {
@@ -278,11 +311,26 @@
             // Use a timeout to allow the fade-out transition to complete before hiding the element
             setTimeout(() => {
                 modal.style.display = 'none';
-            }, 400); // Match the transition duration
+            }, 400); // Match the transition duration (0.4s)
         }
 
-        // Initial content load
-        updateContent(isPersian ? "fa" : "en");
+        // Close modal if clicking outside the content
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+
+        // Close modal if pressing Escape key
+        document.addEventListener('keydown', (event) => {
+            document.querySelectorAll('.modal.active').forEach(modal => {
+                if (event.key === 'Escape') {
+                    closeModal(modal.id);
+                }
+            });
+        });
     </script>
 </body>
 </html>
