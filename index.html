@@ -1,336 +1,371 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTA VC MODS</title>
-    <style>
-        :root {
-            --primary-color: #3498db; /* Persian Blue */
-            --secondary-color: #e74c3c; /* Red for accent */
-            --background-color: #f4f7f6; /* Light background */
-            --text-color: #333;
-            --header-bg: #2c3e50; /* Dark header */
-            --hover-color: #2980b9;
-            --button-hover-glow: rgba(52, 152, 219, 0.7);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTA VC MODS</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow: hidden; /* Hide overflow from background animation */
-            position: relative; /* Needed for absolute positioning of background */
-        }
+  <style>
+    :root {
+      --primary-color: #2ecc71;
+      --secondary-color: #e74c3c;
+      --background-color: #1a1a1d;
+      --text-color: #e0e0e0;
+      --header-bg: #000000;
+      --hover-color: #27ae60;
+      --button-hover-glow: rgba(46, 204, 113, 0.7);
+      --ball-color-start: rgba(74, 163, 255, 0.22); /* softer blue */
+      --ball-color-end: rgba(74, 163, 255, 0);
+    }
 
-        /* Background Sphere Animation */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .sphere {
-            position: absolute;
-            background: radial-gradient(circle, rgba(52, 152, 219, 0.3) 0%, rgba(52, 152, 219, 0) 70%);
-            border-radius: 50%;
-            animation: moveSphere 20s infinite alternate ease-in-out;
-            opacity: 0.8;
-            filter: blur(30px);
-        }
-        /* More spheres for depth */
-        .sphere:nth-child(1) { width: 300px; height: 300px; top: -150px; left: -150px; animation-duration: 25s; }
-        .sphere:nth-child(2) { width: 250px; height: 250px; top: 70%; left: 60%; animation-duration: 18s; animation-delay: -5s; }
-        .sphere:nth-child(3) { width: 400px; height: 400px; top: 30%; left: 10%; animation-duration: 22s; animation-delay: -10s; }
+    /* Rising Balls Animation */
+    .background-container {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
 
-        @keyframes moveSphere {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 100px) scale(1.2); }
-            100% { transform: translate(-100px, -50px) scale(0.8); }
-        }
+    .ball {
+      position: absolute;
+      background: radial-gradient(
+        circle,
+        var(--ball-color-start) 0%,
+        var(--ball-color-end) 70%
+      );
+      border-radius: 50%;
+      animation: riseAndGlow 25s infinite alternate ease-in-out;
+      opacity: 0.35;            /* less glow */
+      filter: blur(18px);      /* softer */
+      box-shadow: 0 0 8px rgba(74, 163, 255, 0.18); /* reduced glow */
+    }
 
-        /* Texture Overlay (optional, uncomment to use) */
-        /*
-        .background-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('path/to/your/texture.png'); // Replace with your texture path
-            opacity: 0.05;
-            pointer-events: none;
-        }
-        */
+    @keyframes riseAndGlow {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.25;
+      }
+      50% {
+        transform: translateY(-320px) scale(1.05);
+        opacity: 0.45;
+      }
+      100% {
+        transform: translateY(-640px) scale(0.95);
+        opacity: 0.18;
+      }
+    }
 
-        .top-bar {
-            background-color: var(--header-bg);
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            position: relative; /* Ensure it stays above background */
-            z-index: 10;
-        }
+    .top-bar {
+      background-color: var(--header-bg);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 10;
+    }
 
-        .top-bar h1 {
-            margin: 0;
-            font-size: 24px;
-            letter-spacing: 1px; /* Slight letter spacing for elegance */
-        }
+    .top-bar h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    }
 
-        .content {
-            padding: 60px 20px; /* Increased padding to make space for background effect */
-            text-align: center;
-            position: relative; /* Ensure content stays above background */
-            z-index: 10;
-        }
+    .content {
+      padding: 80px 30px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
 
-        .btn {
-            padding: 12px 25px;
-            margin: 10px 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            color: white;
-            position: relative;
-            overflow: hidden; /* For the gradient animation */
-        }
+    .btn {
+      padding: 15px 30px;
+      margin: 12px 7px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      transition: all 0.35s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      user-select: none;
+    }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%; /* Start off-screen */
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(10deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.4s ease-out;
-        }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      transition: left 0.45s ease-out;
+    }
 
-        .btn:hover::before {
-            left: 100%; /* Move across the button */
-        }
+    .btn:hover::before {
+      left: 100%;
+    }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            box-shadow: 0 4px 15px 0 var(--button-hover-glow);
-        }
-        .btn-primary:hover {
-            background-color: var(--hover-color);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px 0 rgba(52, 152, 219, 0.9);
-        }
+    .btn-primary {
+      background-color: var(--primary-color);
+      box-shadow: 0 6px 20px 0 var(--button-hover-glow);
+    }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-            backdrop-filter: blur(8px); /* Enhanced blur */
-            justify-content: center; /* Center modal horizontally */
-            align-items: center; /* Center modal vertically */
-        }
+    .btn-primary:hover {
+      background-color: var(--hover-color);
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 25px 0 rgba(46, 204, 113, 0.9);
+    }
 
-        .modal.active {
-            opacity: 1;
-            display: flex; /* Use flex to enable centering */
-        }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.85);
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      align-items: center;
+    }
 
-        .modal-content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            width: 85%;
-            max-width: 550px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            animation: fadeInDown 0.5s ease-out forwards; /* forwards keeps the state */
-            position: relative;
-            text-align: right; /* Align modal content to the right for RTL */
-        }
+    .modal.active {
+      opacity: 1;
+      display: flex;
+    }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .modal-content {
+      background-color: #2c3e50;
+      padding: 35px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      animation: slideInUp 0.5s ease-out forwards;
+      position: relative;
+      text-align: right;
+      border: 1px solid var(--primary-color);
+    }
 
-        .modal-content h2 {
-            margin-top: 0;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 22px;
-        }
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .download-link {
-            display: block;
-            margin: 12px 0;
-            padding: 10px 15px;
-            background: #eaf2f8; /* Very light blue */
-            color: var(--primary-color);
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-            font-weight: 500;
-        }
-        .download-link:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateX(5px); /* Slight move on hover */
-        }
+    .modal-content h2 {
+      margin-top: 0;
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 12px;
+      margin-bottom: 25px;
+      font-size: 26px;
+      text-align: center;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px; /* Positioned on the left for RTL */
-            font-size: 28px;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        .close-btn:hover {
-            color: var(--secondary-color);
-        }
-        .error-message {
-            color: var(--secondary-color);
-            font-weight: bold;
-        }
-    </style>
+    .download-link {
+      display: block;
+      margin: 15px 0;
+      padding: 12px 20px;
+      background: linear-gradient(to right, #34495e, #4a627a);
+      color: #ecf0f1;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .download-link:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateX(8px);
+      border-left-color: #fff;
+    }
+
+    /* Close button: more blue */
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 30px;
+      font-weight: bold;
+      color: #4aa3ff; /* blue */
+      cursor: pointer;
+      transition: color 0.3s ease, transform 0.2s ease;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      color: #1e88ff;
+      transform: scale(1.1);
+    }
+
+    .error-message {
+      color: var(--secondary-color);
+      font-weight: bold;
+    }
+
+    #main-title, #subtitle {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Optional: a red button style if used */
+    .btn-danger {
+      background: #c0392b;
+      box-shadow: 0 6px 20px rgba(192, 57, 43, 0.35);
+    }
+    .btn-danger:hover {
+      background: #e74c3c;
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.55);
+    }
+  </style>
 </head>
+
 <body>
+  <div class="background-container">
+    <!-- Balls are generated via JS -->
+  </div>
 
-    <div class="background-container">
-        <div class="sphere"></div>
-        <div class="sphere"></div>
-        <div class="sphere"></div>
+  <div class="top-bar">
+    <h1>GTA VC MODS</h1>
+  </div>
+
+  <div class="content">
+    <h2 id="main-title">پروژه مادهای GTA Vice City</h2>
+    <p id="subtitle">راهنمای جامع ماد کردن و دانلود ابزارهای مورد نیاز</p>
+
+    <button class="btn btn-primary" onclick="showModal('toolsModal')">ابزارها</button>
+    <button class="btn btn-primary" onclick="showModal('tutorialModal')">ویدیوهای آموزشی</button>
+    <button class="btn btn-primary" onclick="showModal('carModsModal')">مادهای ماشین</button>
+  </div>
+
+  <!-- Modals -->
+  <div id="toolsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('toolsModal')">&times;</span>
+      <h2 id="toolsModalTitle">ابزارها</h2>
+
+      <a class="download-link" href="CollEditor_GTA-VC-MODS.rar">CollEditor</a>
+      <a class="download-link" href="IMG Tool_GTA-VC-MODS.rar">IMG Tool</a>
+      <a class="download-link" href="Magic.TXD_GTA-VC-MODS.rar">Magic.TXD</a>
+      <a class="download-link" href="TXD Workshop 4.0_GTA-VC-MODS.rar">TXD Workshop 4.0</a>
+      <a class="download-link" href="Vice City Mod Manager_GTA-VC-MODS.rar">Vice City Mod Manager</a>
+      <a class="download-link" href="ZModeler 2.2.6_GTA-VC-MODS.rar">ZModeler 2.2.6</a>
+
+      <button class="btn btn-danger" onclick="closeModal('toolsModal')">بستن</button>
     </div>
+  </div>
 
-    <div class="top-bar">
-        <h1>GTA VC MODS</h1>
-        <!-- Language switch button removed -->
+  <div id="tutorialModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('tutorialModal')">&times;</span>
+      <h2>ویدیوهای آموزشی</h2>
+      <p>
+        ویدیو های آموزشی در کانال روبیکا:
+        <a
+          href="https://rubika.ir/GTA_VC_MODS"
+          target="_blank"
+          style="color:#2ecc71; text-decoration: underline;"
+        >rubika.ir/GTA_VC_MODS</a>
+      </p>
+
+      <button class="btn btn-danger" onclick="closeModal('tutorialModal')">بستن</button>
     </div>
+  </div>
 
-    <div class="content">
-        <h2 id="main-title">پروژه مادهای GTA Vice City</h2>
-        <p id="subtitle">راهنمای جامع ماد کردن و دانلود ابزارهای مورد نیاز</p>
-
-        <button class="btn btn-primary" onclick="showModal('toolsModal')">ابزارها</button>
-        <button class="btn btn-primary" onclick="showModal('tutorialModal')">ویدیوهای آموزشی</button>
-        <button class="btn btn-primary" onclick="showModal('carModsModal')">مادهای ماشین</button>
+  <div id="carModsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('carModsModal')">&times;</span>
+      <h2>مادهای ماشین</h2>
+      <p>این بخش در حال توسعه است. لطفاً بعداً دوباره بررسی کنید.</p>
+      <button class="btn btn-danger" onclick="closeModal('carModsModal')">بستن</button>
     </div>
+  </div>
 
-    <!-- Modals -->
-    <div id="toolsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('toolsModal')">&times;</span>
-            <h2 id="toolsModalTitle">ابزارها</h2>
-            <a class="download-link" href="CollEditor_GTA-VC-MODS.rar">CollEditor</a>
-            <a class="download-link" href="IMG Tool_GTA-VC-MODS.rar">IMG Tool</a>
-            <a class="download-link" href="Magic.TXD_GTA-VC-MODS.rar">Magic.TXD</a>
-            <a class="download-link" href="TXD Workshop 4.0_GTA-VC-MODS.rar">TXD Workshop 4.0</a>
-            <a class="download-link" href="Vice City Mod Manager_GTA-VC-MODS.rar">Vice City Mod Manager</a>
-            <a class="download-link" href="ZModeler 2.2.6_GTA-VC-MODS.rar">ZModeler 2.2.6</a>
-            <button class="btn btn-danger" onclick="closeModal('toolsModal')">بستن</button>
-        </div>
-    </div>
+  <script>
+    // Background Ball Animation (smaller, less glowy)
+    document.addEventListener('DOMContentLoaded', () => {
+      const backgroundContainer = document.querySelector('.background-container');
+      const numBalls = 10; // more balls, but each smaller/less glow
 
-    <div id="tutorialModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('tutorialModal')">&times;</span>
-            <h2>ویدیوهای آموزشی</h2>
-            <p>ویدیو های آموزشی در کانال روبیکا: <a href="https://rubika.ir/GTA_VC_MODS" target="_blank" style="color: #3498db; text-decoration: underline;">rubika.ir/GTA_VC_MODS</a></p>
-            <button class="btn btn-danger" onclick="closeModal('tutorialModal')">بستن</button>
-        </div>
-    </div>
+      for (let i = 0; i < numBalls; i++) {
+        const ball = document.createElement('div');
+        ball.classList.add('ball');
 
-    <div id="carModsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('carModsModal')">&times;</span>
-            <h2>مادهای ماشین</h2>
-            <p>این بخش در حال توسعه است. لطفاً بعداً دوباره بررسی کنید.</p>
-            <button class="btn btn-danger" onclick="closeModal('carModsModal')">بستن</button>
-        </div>
-    </div>
+        // Smaller than before: 35..85px
+        const size = Math.random() * 50 + 35;
+        const positionX = Math.random() * 90 + 5; // 5%..95%
 
-    <script>
-        // Background Sphere Animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const spheres = document.querySelectorAll('.sphere');
-            spheres.forEach((sphere, index) => {
-                const size = Math.random() * 200 + 100; // Random size between 100px and 300px
-                const positionX = Math.random() * 100; // Random position X (percentage)
-                const positionY = Math.random() * 100; // Random position Y (percentage)
-                const animationDuration = Math.random() * 10 + 15; // Random duration between 15s and 25s
-                const animationDelay = Math.random() * -10; // Random negative delay for staggered start
+        // Stagger durations and delays
+        const animationDuration = Math.random() * 10 + 15; // 15s..25s
+        const animationDelay = Math.random() * -10; // negative start
 
-                sphere.style.width = `${size}px`;
-                sphere.style.height = `${size}px`;
-                sphere.style.top = `${positionY}%`;
-                sphere.style.left = `${positionX}%`;
-                sphere.style.animation = `moveSphere ${animationDuration}s infinite alternate ease-in-out`;
-                sphere.style.animationDelay = `${animationDelay}s`;
-            });
-        });
+        ball.style.width = `${size}px`;
+        ball.style.height = `${size}px`;
+        ball.style.left = `${positionX}%`;
+        ball.style.bottom = `${-size}px`;
+        ball.style.animation = `riseAndGlow ${animationDuration}s infinite alternate ease-in-out`;
+        ball.style.animationDelay = `${animationDelay}s`;
 
-        // Modal Logic
-        function showModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.style.display = 'flex'; // Use flex to center content
-            // Trigger the fade-in animation after a short delay
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10); // Small delay to ensure the display:flex is applied before transition
-        }
+        backgroundContainer.appendChild(ball);
+      }
+    });
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('active');
-            // Use a timeout to allow the fade-out transition to complete before hiding the element
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 400); // Match the transition duration (0.4s)
-        }
+    // Modal Logic
+    function showModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+    }
 
-        // Close modal if clicking outside the content
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal(modal.id);
-                }
-            });
-        });
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('active');
+      setTimeout(() => (modal.style.display = 'none'), 400);
+    }
 
-        // Close modal if pressing Escape key
-        document.addEventListener('keydown', (event) => {
-            document.querySelectorAll('.modal.active').forEach(modal => {
-                if (event.key === 'Escape') {
-                    closeModal(modal.id);
-                }
-            });
-        });
-    </script>
+    // Close modal if clicking outside the content
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal(modal.id);
+      });
+    });
+
+    // Close modal if pressing Escape
+    document.addEventListener('keydown', (event) => {
+      document.querySelectorAll('.modal.active').forEach(modal => {
+        if (event.key === 'Escape') closeModal(modal.id);
+      });
+    });
+  </script>
 </body>
 </html>
