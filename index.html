@@ -17,6 +17,8 @@
       --modal-content-border: rgba(255, 255, 255, 0.1);
       --modal-header-footer-bg: rgba(0, 0, 0, 0.3);
       --modal-close-btn-hover: #e74c3c;
+      --download-message-bg: rgba(46, 204, 113, 0.8); /* Greenish for download */
+      --download-message-color: #ffffff;
     }
 
     body.day-mode {
@@ -31,12 +33,13 @@
       --modal-content-border: rgba(0, 0, 0, 0.15);
       --modal-header-footer-bg: rgba(255, 255, 255, 0.5);
       --modal-close-btn-hover: #c0392b;
+      --download-message-bg: rgba(41, 128, 185, 0.8); /* Blueish for download */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Arial', sans-serif; /* Changed font for better Persian rendering */
+      font-family: 'Arial', sans-serif;
       background-color: var(--body-bg);
       color: var(--text-color);
       min-height: 100vh;
@@ -46,6 +49,7 @@
       align-items: center;
       padding: 20px;
       overflow: hidden; /* Prevent scrollbars from the body */
+      position: relative; /* Needed for absolute positioning of download message */
     }
 
     .container {
@@ -59,7 +63,7 @@
       border-radius: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       text-align: center;
-      margin: 20px auto; /* Center the container vertically and horizontally */
+      margin: 20px auto;
     }
 
     .top-bar {
@@ -87,7 +91,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 16px;
-      min-height: 44px; /* Touch-friendly */
+      min-height: 44px;
     }
 
     #theme-toggle:hover {
@@ -124,15 +128,15 @@
 
     /* Modal Styles */
     .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 20; /* Sit on top */
+      display: none;
+      position: fixed;
+      z-index: 20;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgba(0, 0, 0, 0.5); /* Fallback background */
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
       backdrop-filter: var(--modal-backdrop-filter);
       -webkit-backdrop-filter: var(--modal-backdrop-filter);
       justify-content: center;
@@ -151,7 +155,7 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       position: relative;
       animation: slideInUp 0.4s ease forwards;
-      overflow: auto; /* For scrollable content */
+      overflow: auto;
     }
 
     .modal-header {
@@ -187,7 +191,7 @@
     }
 
     .modal-body {
-      text-align: right; /* Ensure Persian text alignment */
+      text-align: right;
       margin-bottom: 20px;
     }
 
@@ -200,16 +204,33 @@
       margin-bottom: 10px;
     }
 
-    .modal-body a {
-      color: var(--primary-color);
-      text-decoration: none;
-      transition: color 0.3s ease;
+    /* File download buttons */
+    .download-button {
+      display: flex; /* Use flex to align text and potentially an icon */
+      align-items: center;
+      justify-content: center; /* Center the text */
+      width: 100%;
+      padding: 15px 25px;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      background: var(--glass-bg);
+      color: var(--text-color);
+      cursor: pointer;
       font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      text-decoration: none; /* Remove underline for links acting as buttons */
+      margin-bottom: 10px; /* Space between buttons */
     }
 
-    .modal-body a:hover {
+    .download-button:hover {
+      background: var(--btn-color);
       color: #fff;
-      text-decoration: underline;
+      box-shadow: 0 0 15px var(--btn-color);
+    }
+
+    .download-button span { /* For potential future icon */
+      margin-left: 8px;
     }
 
     .modal-footer {
@@ -232,6 +253,28 @@
 
     .modal-footer button:hover {
       background: var(--modal-close-btn-hover);
+    }
+
+    /* Download Message Styles */
+    #download-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--download-message-bg);
+      color: var(--download-message-color);
+      text-align: center;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 30; /* Ensure it's above everything */
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    #download-message.visible {
+      opacity: 1;
     }
 
     /* Animations */
@@ -258,7 +301,7 @@
         font-size: 32px;
       }
       .container {
-        margin: 40px auto; /* More margin on larger screens */
+        margin: 40px auto;
       }
     }
 
@@ -280,15 +323,25 @@
       .modal-header h2 {
         font-size: 20px;
       }
+      .download-button {
+        font-size: 14px;
+        padding: 12px 20px;
+      }
+      #download-message {
+        font-size: 16px;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <div id="download-message">در حال دانلود...</div>
+
   <div class="container">
     <div class="top-bar">
       <h1>GTA VC MODS</h1>
-      <button id="theme-toggle" onclick="toggleTheme()">🔆 / 🌙</button>
+      <button id="theme-toggle" onclick="toggleTheme()">تغییر حالت روز/شب</button>
     </div>
 
     <div class="intro-text">
@@ -312,12 +365,13 @@
       </div>
       <div class="modal-body">
         <ul>
-          <li><a href="/files/CollEditor_GTA-VC-MODS.rar" download>CollEditor_GTA-VC-MODS.rar</a></li>
-          <li><a href="/files/IMG Tool_GTA-VC-MODS.rar" download>IMG Tool_GTA-VC-MODS.rar</a></li>
-          <li><a href="/files/Magic.TXD_GTA-VC-MODS.rar" download>Magic.TXD_GTA-VC-MODS.rar</a></li>
-          <li><a href="/files/TXD Workshop 4.0_GTA-VC-MODS.rar" download>TXD Workshop 4.0_GTA-VC-MODS.rar</a></li>
-          <li><a href="/files/Vice City Mod Manager_GTA-VC-MODS.rar" download>Vice City Mod Manager_GTA-VC-MODS.rar</a></li>
-          <li><a href="/files/ZModeler 2.2.6_GTA-VC-MODS.rar" download>ZModeler 2.2.6_GTA-VC-MODS.rar</a></li>
+          <!-- Modified download buttons -->
+          <li><a href="/files/CollEditor_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">Coll Editor <span>(v1.0)</span></a></li>
+          <li><a href="/files/IMG Tool_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">IMG Tool <span>(v1.2)</span></a></li>
+          <li><a href="/files/Magic.TXD_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">Magic TXD <span>(v4.5)</span></a></li>
+          <li><a href="/files/TXD Workshop 4.0_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">TXD Workshop <span>(v4.0)</span></a></li>
+          <li><a href="/files/Vice City Mod Manager_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">Vice City Mod Manager <span>(v1.0)</span></a></li>
+          <li><a href="/files/ZModeler 2.2.6_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">ZModeler <span>(v2.2.6)</span></a></li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -361,35 +415,38 @@
   <script>
     function toggleTheme() {
       document.body.classList.toggle('day-mode');
-      // Optional: Save theme preference to localStorage
       localStorage.setItem('theme', document.body.classList.contains('day-mode') ? 'day' : 'night');
     }
 
     function openModal(id) {
       const modal = document.getElementById(id);
       modal.style.display = 'flex';
-      // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
     }
 
     function closeModal(id) {
       const modal = document.getElementById(id);
       modal.style.display = 'none';
-      // Restore body scroll
       document.body.style.overflow = 'auto';
     }
 
-    // Close modal if clicked outside of it
+    function showDownloadMessage() {
+      const message = document.getElementById('download-message');
+      message.classList.add('visible');
+      // Hide the message after a few seconds
+      setTimeout(() => {
+        message.classList.remove('visible');
+      }, 3000); // Message shown for 3 seconds
+    }
+
     window.addEventListener('click', function (e) {
       document.querySelectorAll('.modal').forEach(modal => {
-        // Check if the click was directly on the modal background and not its content
         if (modal.style.display === 'flex' && e.target === modal) {
           closeModal(modal.id);
         }
       });
     });
 
-    // Close modal with Escape key
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal').forEach(modal => {
@@ -400,13 +457,12 @@
       }
     });
 
-    // Optional: Load saved theme preference on page load
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'day') {
         document.body.classList.add('day-mode');
       } else {
-        document.body.classList.remove('day-mode'); // Ensure night mode is default
+        document.body.classList.remove('day-mode');
       }
     });
   </script>
