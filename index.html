@@ -6,45 +6,60 @@
   <title>GTA VC MODS</title>
   <style>
     :root {
-      --primary-color: #2ecc71;
+      --primary-color: #2ecc71; /* Default night mode primary */
       --glass-bg: rgba(255, 255, 255, 0.05);
       --glass-border: rgba(255, 255, 255, 0.1);
       --text-color: #ffffff;
-      --body-bg: #121212;
-      --btn-color: #2ecc71;
+      --body-bg: #121212; /* Default night mode background */
+      --btn-color: #2ecc71; /* Default night mode button color */
+      --modal-backdrop-filter: blur(20px);
+      --modal-content-bg: rgba(255, 255, 255, 0.05);
+      --modal-content-border: rgba(255, 255, 255, 0.1);
+      --modal-header-footer-bg: rgba(0, 0, 0, 0.3);
+      --modal-close-btn-hover: #e74c3c;
     }
 
     body.day-mode {
-      --primary-color: #2980b9;
-      --glass-bg: rgba(255, 255, 255, 0.7);
+      --primary-color: #2980b9; /* Day mode primary */
+      --glass-bg: rgba(255, 255, 255, 0.7); /* Lighter glass for day */
       --glass-border: rgba(0, 0, 0, 0.1);
-      --text-color: #2c3e50;
-      --body-bg: #e0e7ed;
-      --btn-color: #2980b9;
+      --text-color: #2c3e50; /* Darker text for day */
+      --body-bg: #e0e7ed; /* Lighter background for day */
+      --btn-color: #2980b9; /* Day mode button color */
+      --modal-backdrop-filter: blur(15px);
+      --modal-content-bg: rgba(255, 255, 255, 0.8);
+      --modal-content-border: rgba(0, 0, 0, 0.15);
+      --modal-header-footer-bg: rgba(255, 255, 255, 0.5);
+      --modal-close-btn-hover: #c0392b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif; /* Changed font for better Persian rendering */
       background-color: var(--body-bg);
       color: var(--text-color);
       min-height: 100vh;
       transition: background-color 0.4s ease, color 0.4s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 20px;
+      overflow: hidden; /* Prevent scrollbars from the body */
     }
 
     .container {
+      width: 100%;
       max-width: 900px;
-      margin: 40px auto;
-      padding: 40px;
+      padding: 30px;
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: var(--modal-backdrop-filter);
+      -webkit-backdrop-filter: var(--modal-backdrop-filter);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       text-align: center;
+      margin: 20px auto; /* Center the container vertically and horizontally */
     }
 
     .top-bar {
@@ -53,22 +68,32 @@
       align-items: center;
       gap: 15px;
       margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .top-bar h1 {
+      font-size: 28px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
     #theme-toggle {
-      padding: 10px 20px;
+      padding: 12px 25px;
       border-radius: 10px;
       border: 2px solid var(--btn-color);
       background: transparent;
       color: var(--btn-color);
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      min-height: 44px; /* Touch-friendly */
     }
 
     #theme-toggle:hover {
       background: var(--btn-color);
       color: #fff;
+      box-shadow: 0 0 15px var(--btn-color);
     }
 
     .menu-buttons {
@@ -87,16 +112,175 @@
       color: var(--text-color);
       cursor: pointer;
       font-weight: bold;
-      transition: 0.3s;
+      transition: all 0.3s ease;
+      font-size: 16px;
     }
 
     .menu-buttons button:hover {
       background: var(--btn-color);
       color: #fff;
+      box-shadow: 0 0 15px var(--btn-color);
     }
 
-    /* Modal, Responsive styles, etc. omitted for brevity, 
-       just apply the glass logic to them similarly */
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 20; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0, 0, 0, 0.5); /* Fallback background */
+      backdrop-filter: var(--modal-backdrop-filter);
+      -webkit-backdrop-filter: var(--modal-backdrop-filter);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background-color: var(--modal-content-bg);
+      margin: auto;
+      padding: 30px;
+      border: 1px solid var(--modal-content-border);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      position: relative;
+      animation: slideInUp 0.4s ease forwards;
+      overflow: auto; /* For scrollable content */
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--modal-content-border);
+      background: var(--modal-header-footer-bg);
+      border-radius: 15px 15px 0 0;
+      padding: 15px 30px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .close-button {
+      color: #aaa;
+      float: right;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: var(--modal-close-btn-hover);
+      text-decoration: none;
+    }
+
+    .modal-body {
+      text-align: right; /* Ensure Persian text alignment */
+      margin-bottom: 20px;
+    }
+
+    .modal-body ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .modal-body li {
+      margin-bottom: 10px;
+    }
+
+    .modal-body a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: bold;
+    }
+
+    .modal-body a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .modal-footer {
+      background: var(--modal-header-footer-bg);
+      border-radius: 0 0 15px 15px;
+      padding: 15px 30px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .modal-footer button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: var(--btn-color);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .modal-footer button:hover {
+      background: var(--modal-close-btn-hover);
+    }
+
+    /* Animations */
+    @keyframes slideInUp {
+      from {
+        transform: translateY(50%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive Adjustments */
+    @media (min-width: 700px) {
+      .top-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px;
+      }
+      .top-bar h1 {
+        font-size: 32px;
+      }
+      .container {
+        margin: 40px auto; /* More margin on larger screens */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+      .top-bar h1 {
+        font-size: 24px;
+      }
+      .menu-buttons button, #theme-toggle {
+        font-size: 14px;
+        padding: 12px 20px;
+      }
+      .modal-content {
+        width: 95%;
+        padding: 20px;
+      }
+      .modal-header h2 {
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -107,20 +291,124 @@
       <button id="theme-toggle" onclick="toggleTheme()">تغییر حالت روز/شب</button>
     </div>
 
-    <h2>به GTA VC MODS خوش آمدید</h2>
-    <p>این سایت برای دسترسی به مادها و ابزارهای GTA VC طراحی شده است.</p>
+    <div class="intro-text">
+      <h2>به GTA VC MODS خوش آمدید</h2>
+      <p>این سایت برای دسترسی به مادها و ابزارهای GTA VC طراحی شده است.</p>
+    </div>
 
     <div class="menu-buttons">
-      <button>ابزارها</button>
-      <button>ویدیوهای آموزشی</button>
-      <button>مادهای ماشین</button>
+      <button onclick="openModal('toolsModal')">ابزارها</button>
+      <button onclick="openModal('videosModal')">ویدیوهای آموزشی</button>
+      <button onclick="openModal('carsModal')">مادهای ماشین</button>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="toolsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ابزارها</h2>
+        <span class="close-button" onclick="closeModal('toolsModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li><a href="/files/CollEditor_GTA-VC-MODS.rar" download>CollEditor_GTA-VC-MODS.rar</a></li>
+          <li><a href="/files/IMG Tool_GTA-VC-MODS.rar" download>IMG Tool_GTA-VC-MODS.rar</a></li>
+          <li><a href="/files/Magic.TXD_GTA-VC-MODS.rar" download>Magic.TXD_GTA-VC-MODS.rar</a></li>
+          <li><a href="/files/TXD Workshop 4.0_GTA-VC-MODS.rar" download>TXD Workshop 4.0_GTA-VC-MODS.rar</a></li>
+          <li><a href="/files/Vice City Mod Manager_GTA-VC-MODS.rar" download>Vice City Mod Manager_GTA-VC-MODS.rar</a></li>
+          <li><a href="/files/ZModeler 2.2.6_GTA-VC-MODS.rar" download>ZModeler 2.2.6_GTA-VC-MODS.rar</a></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('toolsModal')">بستن</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="videosModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ویدیوهای آموزشی</h2>
+        <span class="close-button" onclick="closeModal('videosModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>ویدیوهای آموزشی ما را در کانال روبیکا دنبال کنید:</p>
+        <p><a href="https://rubika.ir/GTA_VC_MODS" target="_blank">https://rubika.ir/GTA_VC_MODS</a></p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('videosModal')">بستن</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="carsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>مادهای ماشین</h2>
+        <span class="close-button" onclick="closeModal('carsModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>در حال حاضر، لیست مادهای ماشین در حال به‌روزرسانی است.</p>
+        <p>لطفاً بعداً دوباره بررسی کنید!</p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('carsModal')">بستن</button>
+      </div>
     </div>
   </div>
 
   <script>
     function toggleTheme() {
       document.body.classList.toggle('day-mode');
+      // Optional: Save theme preference to localStorage
+      localStorage.setItem('theme', document.body.classList.contains('day-mode') ? 'day' : 'night');
     }
+
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = 'flex';
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = 'none';
+      // Restore body scroll
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal if clicked outside of it
+    window.addEventListener('click', function (e) {
+      document.querySelectorAll('.modal').forEach(modal => {
+        // Check if the click was directly on the modal background and not its content
+        if (modal.style.display === 'flex' && e.target === modal) {
+          closeModal(modal.id);
+        }
+      });
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal').forEach(modal => {
+          if (modal.style.display === 'flex') {
+            closeModal(modal.id);
+          }
+        });
+      }
+    });
+
+    // Optional: Load saved theme preference on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'day') {
+        document.body.classList.add('day-mode');
+      } else {
+        document.body.classList.remove('day-mode'); // Ensure night mode is default
+      }
+    });
   </script>
 </body>
 </html>
