@@ -7,98 +7,177 @@
   <title>GTA VC MODS</title>
   <style>
     :root {
-      --primary-color: #2ecc71; /* Default night mode primary */
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
+      --primary-color: #2ecc71;
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-bg-strong: rgba(255, 255, 255, 0.11);
+      --glass-border: rgba(255, 255, 255, 0.16);
+      --glass-border-strong: rgba(255, 255, 255, 0.24);
       --text-color: #ffffff;
-      --body-bg: #121212; /* Default night mode background */
-      --btn-color: #2ecc71; /* Default night mode button color */
-      --modal-backdrop-filter: blur(20px);
-      --modal-content-bg: rgba(255, 255, 255, 0.05);
-      --modal-content-border: rgba(255, 255, 255, 0.1);
-      --modal-header-footer-bg: rgba(0, 0, 0, 0.3);
+      --body-bg: #121212;
+      --btn-color: #2ecc71;
+      --btn-hover: #31e07a;
+      --modal-backdrop-filter: blur(22px);
+      --modal-content-bg: rgba(255, 255, 255, 0.06);
+      --modal-content-border: rgba(255, 255, 255, 0.14);
+      --modal-header-footer-bg: rgba(0, 0, 0, 0.24);
       --modal-close-btn-hover: #e74c3c;
-      --download-message-bg: rgba(46, 204, 113, 0.8); /* Greenish for download */
+      --download-message-bg: rgba(46, 204, 113, 0.82);
       --download-message-color: #ffffff;
+      --shadow-lg: 0 18px 55px rgba(0, 0, 0, 0.38);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.22);
+      --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     body.day-mode {
-      --primary-color: #2980b9; /* Day mode primary */
-      --glass-bg: rgba(255, 255, 255, 0.7); /* Lighter glass for day */
+      --primary-color: #2980b9;
+      --glass-bg: rgba(255, 255, 255, 0.62);
+      --glass-bg-strong: rgba(255, 255, 255, 0.78);
       --glass-border: rgba(0, 0, 0, 0.1);
-      --text-color: #2c3e50; /* Darker text for day */
-      --body-bg: #e0e7ed; /* Lighter background for day */
-      --btn-color: #2980b9; /* Day mode button color */
-      --modal-backdrop-filter: blur(15px);
-      --modal-content-bg: rgba(255, 255, 255, 0.8);
-      --modal-content-border: rgba(0, 0, 0, 0.15);
-      --modal-header-footer-bg: rgba(255, 255, 255, 0.5);
+      --glass-border-strong: rgba(0, 0, 0, 0.16);
+      --text-color: #2c3e50;
+      --body-bg: #e0e7ed;
+      --btn-color: #2980b9;
+      --btn-hover: #3498db;
+      --modal-backdrop-filter: blur(16px);
+      --modal-content-bg: rgba(255, 255, 255, 0.76);
+      --modal-content-border: rgba(0, 0, 0, 0.13);
+      --modal-header-footer-bg: rgba(255, 255, 255, 0.46);
       --modal-close-btn-hover: #c0392b;
-      --download-message-bg: rgba(41, 128, 185, 0.8); /* Blueish for download */
+      --download-message-bg: rgba(41, 128, 185, 0.82);
+      --download-message-color: #ffffff;
+      --shadow-lg: 0 18px 55px rgba(0, 0, 0, 0.18);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
 
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: var(--body-bg);
+      font-family: Arial, sans-serif;
       color: var(--text-color);
       min-height: 100vh;
-      transition: background-color 0.4s ease, color 0.4s ease;
+      transition: background-color 0.35s ease, color 0.35s ease, filter 0.35s ease;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
-      overflow: hidden; /* Prevent scrollbars from the body */
-      position: relative; /* Needed for absolute positioning of download message */
+      overflow-x: hidden;
+      position: relative;
+
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.08), transparent 26%),
+        linear-gradient(135deg, var(--body-bg), var(--body-bg));
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,0.08), transparent 30%),
+        linear-gradient(300deg, rgba(255,255,255,0.05), transparent 35%);
+      opacity: 0.55;
+      z-index: 0;
     }
 
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 940px;
       padding: 30px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--modal-backdrop-filter);
-      -webkit-backdrop-filter: var(--modal-backdrop-filter);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      text-align: center;
       margin: 20px auto;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+
+      background: linear-gradient(180deg, var(--glass-bg-strong), var(--glass-bg));
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      border-top: 1px solid var(--glass-border-strong);
+      border-left: 1px solid var(--glass-border-strong);
+      border-radius: 26px;
+      box-shadow: var(--shadow-lg), var(--shadow-inset);
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 35%);
+      pointer-events: none;
     }
 
     .top-bar {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 22px;
       border-bottom: 1px solid var(--glass-border);
+      position: relative;
+      z-index: 1;
     }
 
     .top-bar h1 {
-      font-size: 28px;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      font-size: 30px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
     }
 
     #theme-toggle {
-      padding: 12px 25px;
-      border-radius: 10px;
-      border: 2px solid var(--btn-color);
-      background: transparent;
-      color: var(--btn-color);
+      padding: 12px 24px;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      background: linear-gradient(180deg, var(--glass-bg-strong), var(--glass-bg));
+      color: var(--text-color);
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 16px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      font-size: 15px;
       min-height: 44px;
+      box-shadow: var(--shadow-md), var(--shadow-inset);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     #theme-toggle:hover {
+      transform: translateY(-2px);
       background: var(--btn-color);
       color: #fff;
-      box-shadow: 0 0 15px var(--btn-color);
+      border-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 12px 28px rgba(0,0,0,0.22);
+    }
+
+    .intro-text {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 26px;
+      padding: 18px 18px 4px;
+    }
+
+    .intro-text h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .intro-text p {
+      font-size: 16px;
+      line-height: 1.9;
+      opacity: 0.95;
     }
 
     .menu-buttons {
@@ -106,38 +185,49 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
-      margin-top: 30px;
+      margin-top: 26px;
+      position: relative;
+      z-index: 1;
     }
 
     .menu-buttons button {
-      padding: 15px 25px;
+      padding: 15px 24px;
       border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      background: var(--glass-bg);
+      border-radius: 16px;
+      background: linear-gradient(180deg, var(--glass-bg-strong), var(--glass-bg));
       color: var(--text-color);
       cursor: pointer;
       font-weight: bold;
-      transition: all 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
       font-size: 16px;
+      min-width: 170px;
+      box-shadow: var(--shadow-md), var(--shadow-inset);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .menu-buttons button:hover {
+      transform: translateY(-3px);
       background: var(--btn-color);
       color: #fff;
-      box-shadow: 0 0 15px var(--btn-color);
+      border-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 12px 28px rgba(0,0,0,0.22);
     }
 
-    /* Modal Styles */
+    .menu-buttons button:active,
+    #theme-toggle:active,
+    .download-button:active,
+    .modal-footer button:active {
+      transform: translateY(0);
+    }
+
     .modal {
       display: none;
       position: fixed;
+      inset: 0;
       z-index: 20;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
       overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.54);
       backdrop-filter: var(--modal-backdrop-filter);
       -webkit-backdrop-filter: var(--modal-backdrop-filter);
       justify-content: center;
@@ -146,117 +236,150 @@
     }
 
     .modal-content {
-      background-color: var(--modal-content-bg);
+      width: 100%;
+      max-width: 620px;
       margin: auto;
-      padding: 30px;
-      border: 1px solid var(--modal-content-border);
-      border-radius: 20px;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       position: relative;
-      animation: slideInUp 0.4s ease forwards;
-      overflow: auto;
+      overflow: hidden;
+      border-radius: 24px;
+
+      background: linear-gradient(180deg, var(--modal-content-bg), rgba(255,255,255,0.03));
+      border: 1px solid var(--modal-content-border);
+      border-top: 1px solid var(--glass-border-strong);
+      border-left: 1px solid var(--glass-border-strong);
+      box-shadow: var(--shadow-lg), var(--shadow-inset);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      animation: slideInUp 0.38s ease forwards;
+    }
+
+    .modal-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 34%);
+      pointer-events: none;
+    }
+
+    .modal-header,
+    .modal-footer {
+      position: relative;
+      z-index: 1;
+      background: var(--modal-header-footer-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 15px;
-      margin-bottom: 20px;
+      padding: 16px 22px;
       border-bottom: 1px solid var(--modal-content-border);
-      background: var(--modal-header-footer-bg);
-      border-radius: 15px 15px 0 0;
-      padding: 15px 30px;
     }
 
     .modal-header h2 {
       margin: 0;
-      font-size: 24px;
+      font-size: 23px;
     }
 
     .close-button {
       color: #aaa;
-      float: right;
-      font-size: 30px;
+      font-size: 32px;
       font-weight: bold;
       cursor: pointer;
-      transition: color 0.3s ease;
+      transition: color 0.25s ease, transform 0.25s ease;
+      line-height: 1;
     }
 
     .close-button:hover,
     .close-button:focus {
       color: var(--modal-close-btn-hover);
+      transform: scale(1.08);
       text-decoration: none;
     }
 
     .modal-body {
+      position: relative;
+      z-index: 1;
       text-align: right;
-      margin-bottom: 20px;
+      padding: 20px 22px 10px;
+    }
+
+    .modal-body p {
+      line-height: 1.9;
+      margin-bottom: 10px;
     }
 
     .modal-body ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     .modal-body li {
       margin-bottom: 10px;
     }
 
-    /* File download buttons */
     .download-button {
-      display: flex; /* Use flex to align text and potentially an icon */
+      display: flex;
       align-items: center;
-      justify-content: center; /* Center the text */
+      justify-content: center;
       width: 100%;
-      padding: 15px 25px;
+      padding: 15px 22px;
       border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      background: var(--glass-bg);
+      border-radius: 16px;
+      background: linear-gradient(180deg, var(--glass-bg-strong), var(--glass-bg));
       color: var(--text-color);
       cursor: pointer;
       font-weight: bold;
-      transition: all 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
       font-size: 16px;
-      text-decoration: none; /* Remove underline for links acting as buttons */
-      margin-bottom: 10px; /* Space between buttons */
+      text-decoration: none;
+      box-shadow: var(--shadow-md), var(--shadow-inset);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .download-button:hover {
+      transform: translateY(-3px);
       background: var(--btn-color);
       color: #fff;
-      box-shadow: 0 0 15px var(--btn-color);
+      border-color: transparent;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 12px 28px rgba(0,0,0,0.22);
     }
 
-    .download-button span { /* For potential future icon */
-      margin-left: 8px;
+    .download-button span {
+      margin-right: 8px;
+      opacity: 0.92;
+      font-size: 0.95em;
     }
 
     .modal-footer {
-      background: var(--modal-header-footer-bg);
-      border-radius: 0 0 15px 15px;
-      padding: 15px 30px;
+      position: relative;
+      z-index: 1;
+      padding: 16px 22px 20px;
       text-align: center;
-      margin-top: 20px;
+      border-top: 1px solid var(--modal-content-border);
     }
 
     .modal-footer button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: var(--btn-color);
+      padding: 10px 22px;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      background: linear-gradient(180deg, var(--btn-color), var(--btn-hover));
       color: #fff;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
     }
 
     .modal-footer button:hover {
-      background: var(--modal-close-btn-hover);
+      transform: translateY(-2px);
+      filter: brightness(1.02);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.24);
     }
 
-    /* Download Message Styles */
     #download-message {
       position: fixed;
       top: 0;
@@ -268,68 +391,110 @@
       padding: 15px;
       font-size: 18px;
       font-weight: bold;
-      z-index: 30; /* Ensure it's above everything */
+      z-index: 30;
       opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transform: translateY(-100%);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     #download-message.visible {
       opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Animations */
     @keyframes slideInUp {
       from {
-        transform: translateY(50%);
+        transform: translateY(30px) scale(0.98);
         opacity: 0;
       }
       to {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
       }
     }
 
-    /* Responsive Adjustments */
     @media (min-width: 700px) {
       .top-bar {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: 0 30px;
+        padding: 0 12px 18px;
       }
+
       .top-bar h1 {
-        font-size: 32px;
+        font-size: 34px;
       }
+
       .container {
         margin: 40px auto;
+        padding: 34px;
       }
     }
 
     @media (max-width: 480px) {
+      body {
+        padding: 14px;
+      }
+
       .container {
         padding: 20px;
+        border-radius: 22px;
       }
+
       .top-bar h1 {
         font-size: 24px;
       }
-      .menu-buttons button, #theme-toggle {
-        font-size: 14px;
-        padding: 12px 20px;
+
+      .intro-text h2 {
+        font-size: 19px;
       }
+
+      .intro-text p {
+        font-size: 14px;
+      }
+
+      .menu-buttons button,
+      #theme-toggle {
+        font-size: 14px;
+        padding: 12px 18px;
+        min-width: 100%;
+      }
+
+      .menu-buttons {
+        gap: 12px;
+      }
+
       .modal-content {
         width: 95%;
-        padding: 20px;
+        border-radius: 20px;
       }
+
+      .modal-header {
+        padding: 14px 16px;
+      }
+
       .modal-header h2 {
-        font-size: 20px;
+        font-size: 19px;
       }
+
+      .modal-body {
+        padding: 16px 16px 8px;
+      }
+
       .download-button {
         font-size: 14px;
-        padding: 12px 20px;
+        padding: 12px 16px;
       }
+
+      .modal-footer {
+        padding: 14px 16px 18px;
+      }
+
       #download-message {
-        font-size: 16px;
+        font-size: 15px;
         padding: 12px;
       }
     }
@@ -357,7 +522,6 @@
     </div>
   </div>
 
-  <!-- Modals -->
   <div id="toolsModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -366,13 +530,12 @@
       </div>
       <div class="modal-body">
         <ul>
-          <!-- Modified download buttons -->
-          <li><a href="CollEditor_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()"> CollEditor <span>(v1.1 Beta)</span></a></li>
-          <li><a href="IMG Tool_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()"> IMG Tool <span>(v2.0)</span></a></li>
-          <li><a href="Magic.TXD_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()"> Magic TXD <span>(v4.5)</span></a></li>
-          <li><a href="TXD Workshop 4.0_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()"> TXD Workshop <span></span></a></li>
-          <li><a href="Vice City Mod Manager_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()"> Vice City Mod Manager <span>(v1.0)</span></a></li>
-          <li><a href="ZModeler 2.2.6_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()"> ZModeler <span>(v2.2.6)</span></a></li>
+          <li><a href="CollEditor_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">CollEditor <span>(v1.1 Beta)</span></a></li>
+          <li><a href="IMG Tool_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">IMG Tool <span>(v2.0)</span></a></li>
+          <li><a href="Magic.TXD_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">Magic TXD <span>(v4.5)</span></a></li>
+          <li><a href="TXD Workshop 4.0_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">TXD Workshop <span></span></a></li>
+          <li><a href="Vice City Mod Manager_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">Vice City Mod Manager <span>(v1.0)</span></a></li>
+          <li><a href="ZModeler 2.2.6_GTA-VC-MODS.rar" class="download-button" onclick="showDownloadMessage()">ZModeler <span>(v2.2.6)</span></a></li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -434,10 +597,10 @@
     function showDownloadMessage() {
       const message = document.getElementById('download-message');
       message.classList.add('visible');
-      // Hide the message after a few seconds
+
       setTimeout(() => {
         message.classList.remove('visible');
-      }, 3000); // Message shown for 3 seconds
+      }, 3000);
     }
 
     window.addEventListener('click', function (e) {
